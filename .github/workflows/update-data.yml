@@ -1,0 +1,38 @@
+name: 每日收盘后更新大盘宽度数据
+
+on:
+  schedule:
+    # 北京时间 16:30（UTC+8）= UTC 08:30，周一至周五
+    - cron: "30 8 * * 1-5"
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  update-breadth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120   # AkShare 拉全市场约 60-90 分钟
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: 安装依赖
+        run: pip install akshare pandas tqdm pyarrow supabase
+
+      - name: 运行数据采集脚本
+        env:
+          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python scripts/update_breadth.py
+
+      - name: 上传缓存（加速下次运行）
+        uses: actions/cache@v4
+        with:
+          path: .cache_akshare
+          key: akshare-cache-${{ hashFiles('scripts/update_breadth.py') }}
+          restore-keys: akshare-cache-

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# AkShare cache (too large for git, GitHub Actions caches separately)
+.cache_akshare/
+
+# Python
+__pycache__/
+*.py[cod]
+*.parquet
+
+# OS
+.DS_Store
+Thumbs.db
+
+run.sh
