@@ -9,7 +9,7 @@ on:
 jobs:
   update-breadth:
     runs-on: ubuntu-latest
-    timeout-minutes: 120   # AkShare 拉全市场约 60-90 分钟
+    timeout-minutes: 30
 
     steps:
       - name: 检出代码
@@ -24,15 +24,21 @@ jobs:
       - name: 安装依赖
         run: pip install akshare pandas tqdm pyarrow supabase
 
-      - name: 运行数据采集脚本
-        env:
-          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: python scripts/update_breadth.py
-
-      - name: 上传缓存（加速下次运行）
+      - name: 恢复缓存
         uses: actions/cache@v4
         with:
           path: .cache_akshare
-          key: akshare-cache-${{ hashFiles('scripts/update_breadth.py') }}
+          key: akshare-cache-${{ runner.os }}
           restore-keys: akshare-cache-
+
+      - name: 运行数据更新脚本
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python scripts/update_breadth.py
+
+      - name: 保存缓存
+        uses: actions/cache@v4
+        with:
+          path: .cache_akshare
+          key: akshare-cache-${{ runner.os }}
