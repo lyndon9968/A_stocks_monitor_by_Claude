@@ -68,7 +68,7 @@ export default function Home() {
       <header>
         <div>
           <h1>A股大盘监控</h1>
-          <p className="sub">{loading ? "数据加载中…" : `最新数据 · ${dateStr}`}</p>
+          <p className="sub" style={{display:"flex",justifyContent:"space-between"}}><span>{loading ? "数据加载中…" : `最新数据 · ${dateStr}`}</span><span style={{color:"rgba(255,255,255,0.25)"}}>Created by CCC</span></p>
         </div>
         <div className="range-tabs">
           {([60, 120, 250] as Range[]).map((d) => (
