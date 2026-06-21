@@ -47,15 +47,11 @@ def get_trade_dates(start: str, end: str) -> list[str]:
 
 
 def get_all_codes() -> list[str]:
-    """返回新浪格式代码列表，如 ['sh600000', 'sz000001', ...]"""
-    df = ak.stock_info_a_code_name()
-    codes = []
-    for code in df["code"].tolist():
-        if code.startswith("6"):
-            codes.append(f"sh{code}")
-        elif code.startswith(("0", "3")):
-            codes.append(f"sz{code}")
-    return codes
+    """从本地文件读取股票列表，避免在 GitHub Actions 中访问境外受限网站"""
+    import json
+    codes_file = Path(__file__).parent / "stock_codes.json"
+    with open(codes_file, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def fetch_hist(symbol: str, cache_file: Path) -> tuple[pd.DataFrame, bool]:
