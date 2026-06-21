@@ -165,7 +165,6 @@ export default function BreadthChart({ data, layers }: Props) {
         yRatio: {
           position: "right" as const,
           min: 0,
-          max: 70,
           ticks: {
             color: "#3b82f6",
             font: { size: 10 },
