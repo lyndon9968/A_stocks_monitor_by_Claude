@@ -130,13 +130,13 @@ export default function BreadthChart({ data, layers }: Props) {
         tooltip: {
           callbacks: {
             label: (ctx: any) => {
-              if (ctx.dataset.label.startsWith("_")) return null;
+              if (ctx.dataset.label.startsWith("_")) return;
               if (ctx.dataset.label === "上证指数")
                 return `上证：${ctx.parsed.y.toFixed(2)}`;
               return `${ctx.dataset.label}：${ctx.parsed.y.toFixed(2)}%`;
             },
           },
-          filter: (item: any) => !item.dataset.label.startsWith("_"),
+          filter: (item: any) => !item.dataset.label.startsWith("_") as boolean,
         },
       },
       scales: {
