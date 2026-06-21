@@ -6,7 +6,9 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  LineController,
   BarElement,
+  BarController,
   Title,
   Tooltip,
   Legend,
@@ -18,7 +20,8 @@ import type { BreadthRow } from "@/app/lib/supabase";
 
 ChartJS.register(
   CategoryScale, LinearScale, PointElement,
-  LineElement, BarElement, Title, Tooltip, Legend, Filler
+  LineElement, LineController, BarElement, BarController,
+  Title, Tooltip, Legend, Filler
 );
 
 type Props = {
